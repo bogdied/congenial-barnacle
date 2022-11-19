@@ -1,3 +1,9 @@
+//union seems to work fine, but symmetrical difference doesn't beacause I hasn't fixed it yet.
+
+
+
+
+
 #include <iostream>
 #include <vector>
 #include <set>
