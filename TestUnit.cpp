@@ -95,16 +95,29 @@ int main(){
     }
 
     for (int i = 0, j = 0; i < vec1.size() && j < vec2.size();){
-        if (i == vec1.size()-1){
-            symmetric_difference.push_back(vec1[i]);
+        if (vec1[i] == vec2[j]){
+                set_union.push_back(vec1[i]);
+            }
+            else {
+                set_union.push_back(vec1[i]);
+                set_union.push_back(vec2[j]);
+            }
+            ++j;
             for (; j < vec2.size(); ++j){
-                symmetric_difference.push_back(vec2[j]);
+                set_union.push_back(vec2[j]);
             }
         }
         else if (j == vec2.size()-1){
-            symmetric_difference.push_back(vec2[j]);
+            if (vec1[i] == vec2[j]){
+                set_union.push_back(vec1[i]);
+            }
+            else {
+                set_union.push_back(vec1[i]);
+                set_union.push_back(vec2[j]);
+            }
+            ++i;
             for (; i < vec1.size(); ++i){
-                symmetric_difference.push_back(vec1[i]);
+                set_union.push_back(vec1[i]);
             }
         }
         else if (vec1[i] < vec2[j]){
