@@ -50,9 +50,9 @@ int main() {
 
 void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output){
     int i = 0, j = 0;
-    while (true){
+    while (i < first.size() && j < second.size()){
 
-        if (i == first.size()-1){
+        if (i + 1 == first.size()){
             if (first[i] == second[j]){
                 output.push_back(first[i]);
                 ++j;
@@ -60,55 +60,65 @@ void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<in
                     output.push_back(second[j]);
                     ++j;
                 }
-                break;
             }
-            else {
-                while (first[i] > second[j]){
+            else if (first[i] < second[j]){
+                output.push_back(first[i]);         //mistake can be here ( missing '++j'? )
+                while (j < second.size()){
                     output.push_back(second[j]);
                     ++j;
+                }
+            }
+            else if (first[i] > second[j]){
+                while (first[i] > second[j]){
+                    output.push_back(second[j]);
+                    ++j;                            //mistake can be here
                 }
                 output.push_back(first[i]);
                 while (j < second.size()){
                     output.push_back(second[j]);
                     ++j;
                 }
-                break;
             }
         }
 
-        if (j == second.size()-1){
+        else if (j + 1 == second.size()){
             if (first[i] == second[j]){
-                output.push_back(first[i]);
+                output.push_back(second[j]);
                 ++i;
                 while (i < first.size()){
                     output.push_back(first[i]);
                     ++i;
                 }
-                break;
             }
-            else {
-                while (second[j] > first[i]){
-                    output.push_back(first[i]);
-                    ++i;
-                }
-                output.push_back(first[i]);
+            else if (second[j] < first[i]){
+                output.push_back(second[j]);         //mistake can be here ( missing '++i'? )
                 while (i < first.size()){
                     output.push_back(first[i]);
                     ++i;
                 }
-                break;
+            }
+            else if (second[j] > first[i]){
+                while (second[j] > first[i]){
+                    output.push_back(first[i]);
+                    ++i;                            //mistake can be here
+                }
+                output.push_back(second[j]);
+                while (i < first.size()){
+                    output.push_back(first[i]);
+                    ++i;
+                }
             }
         }
 
-        else if (first[i] > second[j]){
-            output.push_back(second[j]);
-            ++j;
-        }
-        else if (second[j] > first[i]){
+        if (first[i] < second[j]) {
             output.push_back(first[i]);
             ++i;
         }
-        else {
+        else if (second[j] < first[i]) {
+            output.push_back(second[j]);
+            ++j;
+        }
+        else if (first[i] == second[j]){
             output.push_back(first[i]);
             ++i;
             ++j;
