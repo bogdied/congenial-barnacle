@@ -41,7 +41,7 @@ int main() {
     std::set_union(first.begin(), first.end(), second.begin(), second.end(), std::back_inserter(stl_union));
     print_size_and_elements(stl_union);
 
-//    std::cout << (Union == stl_union) ? "YES" : "NO";
+    std::cout << '\n' << ((Union == stl_union) ? "GOOD" : "NOT GOOD");
 
 
 //    print_size_and_elements(first);
@@ -63,10 +63,11 @@ void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<in
                 break;
             }
             else {
+                while (first[i] > second[j]){
+                    output.push_back(second[j]);
+                    ++j;
+                }
                 output.push_back(first[i]);
-                output.push_back(second[j]);
-                ++i;
-                ++j;
                 while (j < second.size()){
                     output.push_back(second[j]);
                     ++j;
@@ -86,10 +87,11 @@ void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<in
                 break;
             }
             else {
+                while (second[j] > first[i]){
+                    output.push_back(first[i]);
+                    ++i;
+                }
                 output.push_back(first[i]);
-                output.push_back(second[j]);
-                ++i;
-                ++j;
                 while (i < first.size()){
                     output.push_back(first[i]);
                     ++i;
