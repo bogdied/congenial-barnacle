@@ -74,11 +74,15 @@ void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<in
                     ++j;                            //mistake can be here
                 }
                 output.push_back(first[i]);
+                if (second[j] == first[i]){         // cool thing
+                    ++j;
+                }
                 while (j < second.size()){
                     output.push_back(second[j]);
                     ++j;
                 }
             }
+            break;
         }
 
         else if (j + 1 == second.size()){
@@ -103,11 +107,15 @@ void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<in
                     ++i;                            //mistake can be here
                 }
                 output.push_back(second[j]);
+                if (second[j] == first[i]){         // cool thing
+                    ++i;
+                }
                 while (i < first.size()){
                     output.push_back(first[i]);
                     ++i;
                 }
             }
+            break;
         }
 
         if (first[i] < second[j]) {
