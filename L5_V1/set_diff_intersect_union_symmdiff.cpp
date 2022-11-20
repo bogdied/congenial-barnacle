@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+//#include <algorithm>
 
 void sort(std::vector<int>& vec);
 void get_size_and_elements(std::vector<int>& vec);
@@ -8,7 +9,6 @@ void set_difference(std::vector<int>& first, std::vector<int>& second, std::vect
 void set_intersection(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output);
 void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output);
 void set_symmetrical_difference(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output);
-
 
 int main() {
 
@@ -61,7 +61,6 @@ int main() {
 //    std::set_symmetric_difference(first.begin(), first.end(), second.begin(), second.end(), std::back_inserter(symmetrical_difference_stl));
 //    print_size_and_elements(symmetrical_difference_stl);
 
-
 }
 
 void set_symmetrical_difference(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output){
@@ -76,7 +75,6 @@ void set_symmetrical_difference(std::vector<int>& first, std::vector<int>& secon
             second.erase(second.begin()+j);
         }
     }
-//    set_union(first,second,output);
     set_union(first, second,output);
 
 }
