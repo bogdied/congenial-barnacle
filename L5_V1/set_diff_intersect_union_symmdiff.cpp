@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 void sort(std::vector<int>& vec);
 void get_size_and_elements(std::vector<int>& vec);
@@ -8,6 +7,7 @@ void print_size_and_elements(std::vector<int>& vec);
 void set_difference(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output);
 void set_intersection(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output);
 void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output);
+void set_symmetrical_difference(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output);
 
 
 int main() {
@@ -21,17 +21,26 @@ int main() {
     sort(first);
     sort(second);
 
-//    std::vector<int> f_s_difference;
-//    set_difference(first, second, f_s_difference);
-//    print_size_and_elements(f_s_difference);
-//
-//    std::vector<int> s_f_difference;
-//    set_difference(second, first, f_s_difference);
-//    print_size_and_elements(f_s_difference);
-//
-//    std::vector<int> intersection;
-//    set_intersection(first, second, intersection);
-//    print_size_and_elements(intersection);
+    std::vector<int> f_s_difference;
+    set_difference(first, second, f_s_difference);
+    print_size_and_elements(f_s_difference);
+
+    std::vector<int> f_s_difference_stl;
+    std::set_difference(first.begin(), first.end(), second.begin(), second.end(), std::back_inserter(f_s_difference_stl));
+    print_size_and_elements(f_s_difference);
+
+    std::vector<int> s_f_difference;
+    set_difference(second, first, s_f_difference);
+    print_size_and_elements(s_f_difference);
+
+    std::vector<int> s_f_difference_stl;
+    std::set_difference(second.begin(), second.end(), first.begin(), first.end(), std::back_inserter(s_f_difference_stl));
+    print_size_and_elements(s_f_difference_stl);
+
+
+    std::vector<int> intersection;
+    set_intersection(first, second, intersection);
+    print_size_and_elements(intersection);
 
     std::vector<int> Union;
     set_union(first, second, Union);
@@ -39,99 +48,39 @@ int main() {
 
     std::vector<int> stl_union;
     std::set_union(first.begin(), first.end(), second.begin(), second.end(), std::back_inserter(stl_union));
-    print_size_and_elements(stl_union);
+    print_size_and_elements(Union);
 
-    std::cout << '\n' << ((Union == stl_union) ? "GOOD" : "NOT GOOD");
+    std::vector<int> symmetrical_difference;
+    set_symmetrical_difference(first, second, symmetrical_difference);
+    print_size_and_elements(symmetrical_difference);
 
 
-//    print_size_and_elements(first);
-//    print_size_and_elements(second);
 }
 
-void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output){
+void set_symmetrical_difference(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output){
     int i = 0, j = 0;
     while (i < first.size() && j < second.size()){
-
-        if (i + 1 == first.size()){
-            if (first[i] == second[j]){
-                output.push_back(first[i]);
-                ++j;
-                while (j < second.size()){
-                    output.push_back(second[j]);
-                    ++j;
-                }
-            }
-            else if (first[i] < second[j]){
-                output.push_back(first[i]);         //mistake can be here ( missing '++j'? )
-                while (j < second.size()){
-                    output.push_back(second[j]);
-                    ++j;
-                }
-            }
-            else if (first[i] > second[j]){
-                while (first[i] > second[j]){
-                    output.push_back(second[j]);
-                    ++j;                            //mistake can be here
-                }
-                output.push_back(first[i]);
-                if (second[j] == first[i]){         // cool thing
-                    ++j;
-                }
-                while (j < second.size()){
-                    output.push_back(second[j]);
-                    ++j;
-                }
-            }
-            break;
-        }
-
-        else if (j + 1 == second.size()){
-            if (first[i] == second[j]){
-                output.push_back(second[j]);
-                ++i;
-                while (i < first.size()){
-                    output.push_back(first[i]);
-                    ++i;
-                }
-            }
-            else if (second[j] < first[i]){
-                output.push_back(second[j]);         //mistake can be here ( missing '++i'? )
-                while (i < first.size()){
-                    output.push_back(first[i]);
-                    ++i;
-                }
-            }
-            else if (second[j] > first[i]){
-                while (second[j] > first[i]){
-                    output.push_back(first[i]);
-                    ++i;                            //mistake can be here
-                }
-                output.push_back(second[j]);
-                if (second[j] == first[i]){         // cool thing
-                    ++i;
-                }
-                while (i < first.size()){
-                    output.push_back(first[i]);
-                    ++i;
-                }
-            }
-            break;
-        }
-
-        if (first[i] < second[j]) {
-            output.push_back(first[i]);
-            ++i;
-        }
-        else if (second[j] < first[i]) {
-            output.push_back(second[j]);
+        if (first[i] > second[j])
             ++j;
-        }
-        else if (first[i] == second[j]){
-            output.push_back(first[i]);
+        else if (second[j] > first[i])
             ++i;
-            ++j;
+        else {
+            first.erase(first.begin()+i);
+            second.erase(second.begin()+j);
         }
     }
+//    set_union(first,second,output);
+    set_union(first, second,output);
+
+}
+
+
+void set_union(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output){
+    set_difference(second, first, output);
+    for (int & i : first){
+        output.push_back(i);
+    }
+    sort(output);
 }
 
 void set_intersection(std::vector<int>& first, std::vector<int>& second, std::vector<int>& output){
